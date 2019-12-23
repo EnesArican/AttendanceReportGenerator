@@ -1,11 +1,5 @@
 
-function Get-Workbook( [String]$path ){ 
-    $Excel = New-Object -Com Excel.Application
-    $Excel.Workbooks.Open($path, 0, $false) 
-}
-
-
-function Get-Dates-And-Records($worksheet, $attendanceHash, [__ComObject]$range, [String]$dateString){
+function Get-DatesAndRecords($worksheet, $attendanceHash, [__ComObject]$range, [String]$dateString){
     $DateSearch = $range.find($dateString)
     if ($null -ne $DateSearch) {
         $FirstAddress = $DateSearch.Address()
@@ -28,7 +22,7 @@ function Get-Dates-And-Records($worksheet, $attendanceHash, [__ComObject]$range,
     }
 }
 
-function Get-Ihvan-Names($worksheet, $nameArray, [String]$nameString){
+function Get-IhvanNames($worksheet, $nameArray, [String]$nameString){
     $Search = $Range.find($nameString)
     $row = $search.row + 1
 
@@ -41,7 +35,7 @@ function Get-Ihvan-Names($worksheet, $nameArray, [String]$nameString){
 }
 
 
-function Set-Dates-And-Records($worksheet, $attendanceHash){
+function Set-DatesAndRecords($worksheet, $attendanceHash){
     $column = 2
 
     foreach ($h in $attendanceHash.GetEnumerator()) {
@@ -53,7 +47,7 @@ function Set-Dates-And-Records($worksheet, $attendanceHash){
     }
 }
 
-function Set-Ihvan-Names($worksheet, $nameArray){
+function Set-IhvanNames($worksheet, $nameArray){
     $NameObject = $nameArray | Select-Object @{Name='Name';Expression={$_}} 
     $NameObject | ConvertTo-CSV -NoTypeInformation -Delimiter "`t" | Clip
 

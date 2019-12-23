@@ -1,4 +1,5 @@
 . .\Scripts\ExcelUtils.ps1
+. .\Scripts\DataManager.ps1
 
 Write-Progress -Activity "Formatting" -Status "0% Complete - Opening Excel Document" -PercentComplete 0
 
@@ -15,8 +16,8 @@ $NameArray = @()
 $AttendanceHash = [ordered]@{}
 $Range = $Worksheet.Range("A1","A3000")
 
-Get-Dates-And-Records -worksheet $WorkSheet -attendanceHash $AttendanceHash -range $Range -dateString 'Date:*'
-Get-Ihvan-Names -worksheet $WorkSheet -nameArray $NameArray -nameString 'Last Name'
+Get-DatesAndRecords -worksheet $WorkSheet -attendanceHash $AttendanceHash -range $Range -dateString 'Date:*'
+Get-IhvanNames -worksheet $WorkSheet -nameArray $NameArray -nameString 'Last Name'
 
 
 Write-Progress -Activity "Formatting" -Status "20% Complete - Making new Worksheet" -PercentComplete 20 
@@ -26,8 +27,8 @@ $Workbook.worksheets.add() | Out-Null
 $WorkSheet = $Workbook.worksheets.Item(1)
 $WorkSheet.activate()
 
-Set-Ihvan-Names -worksheet $WorkSheet -nameArray $NameArray
-Set-Dates-And-Records -worksheet $WorkSheet -attendanceHash $AttendanceHash
+Set-IhvanNames -worksheet $WorkSheet -nameArray $NameArray
+Set-DatesAndRecords -worksheet $WorkSheet -attendanceHash $AttendanceHash
 
 
 
