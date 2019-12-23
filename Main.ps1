@@ -16,9 +16,8 @@ $NameArray = @()
 $AttendanceHash = [ordered]@{}
 $Range = $Worksheet.Range("A1","A3000")
 
-Get-DatesAndRecords -worksheet $WorkSheet -attendanceHash $AttendanceHash -range $Range -dateString 'Date:*'
-Get-IhvanNames -worksheet $WorkSheet -nameArray $NameArray -nameString 'Last Name'
-
+$AttendanceHash = Get-DatesAndRecords -worksheet $WorkSheet -range $Range -dateString 'Date:*'
+$NameArray = Get-IhvanNames -worksheet $WorkSheet -nameString 'Last Name'
 
 Write-Progress -Activity "Formatting" -Status "20% Complete - Making new Worksheet" -PercentComplete 20 
 
@@ -30,7 +29,8 @@ $WorkSheet.activate()
 Set-IhvanNames -worksheet $WorkSheet -nameArray $NameArray
 Set-DatesAndRecords -worksheet $WorkSheet -attendanceHash $AttendanceHash
 
-
+$Workbook.Save()
+$Workbook.Close()
 
 
 #Write-Progress -Activity "Formatting" -Status "3% Complete - Getting Records" -PercentComplete 10 -Completed

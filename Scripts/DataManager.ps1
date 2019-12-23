@@ -1,5 +1,8 @@
 
-function Get-DatesAndRecords($worksheet, $attendanceHash, [__ComObject]$range, [String]$dateString){
+function Get-DatesAndRecords($worksheet, [__ComObject]$range, [String]$dateString){
+
+    $attendanceHash = [ordered]@{}
+
     $DateSearch = $range.find($dateString)
     if ($null -ne $DateSearch) {
         $FirstAddress = $DateSearch.Address()
@@ -20,9 +23,11 @@ function Get-DatesAndRecords($worksheet, $attendanceHash, [__ComObject]$range, [
         
         } while ( $null -ne $DateSearch -and $DateSearch.Address() -ne $FirstAddress)
     }
+    $attendanceHash
 }
 
-function Get-IhvanNames($worksheet, $nameArray, [String]$nameString){
+function Get-IhvanNames($worksheet, [String]$nameString){
+    $nameArray = @()
     $Search = $Range.find($nameString)
     $row = $search.row + 1
 
@@ -32,6 +37,7 @@ function Get-IhvanNames($worksheet, $nameArray, [String]$nameString){
          $nameArray += $FirstName + ' ' + $LastName
          $row++
     } while ($null -ne  $worksheet.cells.item($row,1).value())
+    $nameArray
 }
 
 
