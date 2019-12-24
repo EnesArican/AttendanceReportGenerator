@@ -26,9 +26,9 @@ function Get-DatesAndRecords($worksheet, [__ComObject]$range, [String]$dateStrin
     $attendanceHash
 }
 
-function Get-IhvanNames($worksheet, [String]$nameString){
+function Get-IhvanNames($worksheet,  [__ComObject]$range, [String]$nameString){
     $nameArray = @()
-    $Search = $Range.find($nameString)
+    $Search = $range.find($nameString)
     $row = $search.row + 1
 
     do {
@@ -57,9 +57,12 @@ function Set-DatesAndRecords($worksheet, $attendanceHash){
 }
 
 function Set-IhvanNames($worksheet, $nameArray){
-    $row = 1
+    $row = 2
     foreach ($name in $nameArray){
         $worksheet.cells.Item($row, 1) = $name
         $row++
     }
 }
+
+Export-ModuleMember -Function 'Get-*'
+Export-ModuleMember -Function 'Set-*'

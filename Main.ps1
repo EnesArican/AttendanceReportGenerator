@@ -1,7 +1,10 @@
 . .\Scripts\ExcelUtils.ps1
-. .\Scripts\DataManager.ps1
 
-Write-Progress -Activity "Formatting" -Status "0% Complete - Opening Excel Document" -PercentComplete 0
+Import-Module .\Scripts\DataManager.psm1
+Import-Module .\Scripts\Formatters\WorksheetFormatter.psm1
+
+
+#Write-Progress -Activity "Formatting" -Status "0% Complete - Opening Excel Document" -PercentComplete 0
 
 # Get excel doc
 $path = "C:\Temp\daily_report.xlsx"
@@ -19,7 +22,7 @@ $AttendanceHash = [ordered]@{}
 $Range = $Worksheet.Range("A1","A3000")
 
 $AttendanceHash = Get-DatesAndRecords -worksheet $WorkSheet -range $Range -dateString 'Date:*'
-$NameArray = Get-IhvanNames -worksheet $WorkSheet -nameString 'Last Name'
+$NameArray = Get-IhvanNames -worksheet $WorkSheet -range $Range -nameString 'Last Name'
 
 Write-Progress -Activity "Formatting" -Status "20% Complete - Making new Worksheet" -PercentComplete 20 
 
@@ -31,9 +34,20 @@ $WorkSheet.activate()
 Set-IhvanNames -worksheet $WorkSheet -nameArray $NameArray
 Set-DatesAndRecords -worksheet $WorkSheet -attendanceHash $AttendanceHash
 
+Write-Progress -Activity "Formatting" -Status "30% Complete - Making new Worksheet" -PercentComplete 30 
+
+
+
+
+# Add columns and rows to new worksheet
+1..3 | ForEach-Object{ [void](Add-NewRow($WorkSheet)) }
+[void](Add-NewColumn($WorkSheet)) 
+
+
+
 $Excel.DisplayAlerts = $false
 $Workbook.SaveAs("C:\Temp\daily_report_12.xlsx")
 $Workbook.Close()
 $Excel.Quit()
 
-#Write-Progress -Activity "Formatting" -Status "3% Complete - Getting Records" -PercentComplete 10 -Completed
+Write-Progress -Activity "Formatting" -Status "3% Complete - Getting Records" -PercentComplete 100 -Completed

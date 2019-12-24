@@ -1,5 +1,1 @@
-
-function Get-Workbook( [String]$path ){ 
-    $Excel = New-Object -Com Excel.Application
-    $Excel.Workbooks.Open($path, 0, $false) 
-}
+Import-Module .\Scripts\Formatters\WorksheetFormatter.psm1
