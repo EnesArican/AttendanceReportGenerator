@@ -4,7 +4,9 @@
 Write-Progress -Activity "Formatting" -Status "0% Complete - Opening Excel Document" -PercentComplete 0
 
 # Get excel doc
-$Workbook = Get-Workbook -path "C:\Temp\daily_report.xlsx"
+$path = "C:\Temp\daily_report.xlsx"
+$Excel = New-Object -Com Excel.Application
+$Workbook =  $Excel.Workbooks.Open($path, 0, $false) 
 $WorkSheet = $Workbook.worksheets.Item(1)
 $WorkSheet.activate()
 
@@ -29,8 +31,9 @@ $WorkSheet.activate()
 Set-IhvanNames -worksheet $WorkSheet -nameArray $NameArray
 Set-DatesAndRecords -worksheet $WorkSheet -attendanceHash $AttendanceHash
 
-$Workbook.Save()
+$Excel.DisplayAlerts = $false
+$Workbook.SaveAs("C:\Temp\daily_report_12.xlsx")
 $Workbook.Close()
-
+$Excel.Quit()
 
 #Write-Progress -Activity "Formatting" -Status "3% Complete - Getting Records" -PercentComplete 10 -Completed

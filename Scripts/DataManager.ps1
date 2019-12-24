@@ -45,17 +45,21 @@ function Set-DatesAndRecords($worksheet, $attendanceHash){
     $column = 2
 
     foreach ($h in $attendanceHash.GetEnumerator()) {
-        $NameObject = $h.Value| Select-Object @{Name=$h.Name;Expression={$_}} 
-        $NameObject | ConvertTo-CSV -NoTypeInformation -Delimiter "`t" | Clip
-
-        $worksheet.cells.Item(1,$column).PasteSpecial()
+        $row = 1
+        $worksheet.cells.Item($row, $column) = $h.Name
+        $row++
+        foreach ($name in $nameArray){
+            $worksheet.cells.Item($row, $column) = $h.Value
+            $row++
+        }
         $column++
     }
 }
 
 function Set-IhvanNames($worksheet, $nameArray){
-    $NameObject = $nameArray | Select-Object @{Name='Name';Expression={$_}} 
-    $NameObject | ConvertTo-CSV -NoTypeInformation -Delimiter "`t" | Clip
-
-    $worksheet.cells.Item(1).PasteSpecial()
+    $row = 1
+    foreach ($name in $nameArray){
+        $worksheet.cells.Item($row, 1) = $name
+        $row++
+    }
 }
