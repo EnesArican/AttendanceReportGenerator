@@ -48,8 +48,8 @@ function Set-DatesAndRecords($worksheet, $attendanceHash){
         $row = 1
         $worksheet.cells.Item($row, $column) = $h.Name
         $row++
-        foreach ($name in $nameArray){
-            $worksheet.cells.Item($row, $column) = $h.Value
+        foreach ($v in $h.Value){
+            $worksheet.cells.Item($row, $column) = $v
             $row++
         }
         $column++

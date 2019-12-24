@@ -1,7 +1,7 @@
-. .\Scripts\ExcelUtils.ps1
 
 Import-Module .\Scripts\DataManager.psm1
-Import-Module .\Scripts\Formatters\WorksheetFormatter.psm1
+Import-Module .\Scripts\ExcelUtils.psm1
+
 
 
 #Write-Progress -Activity "Formatting" -Status "0% Complete - Opening Excel Document" -PercentComplete 0
@@ -31,17 +31,14 @@ $Workbook.worksheets.add() | Out-Null
 $WorkSheet = $Workbook.worksheets.Item(1)
 $WorkSheet.activate()
 
+
 Set-IhvanNames -worksheet $WorkSheet -nameArray $NameArray
 Set-DatesAndRecords -worksheet $WorkSheet -attendanceHash $AttendanceHash
 
 Write-Progress -Activity "Formatting" -Status "30% Complete - Making new Worksheet" -PercentComplete 30 
 
-
-
-
-# Add columns and rows to new worksheet
-1..3 | ForEach-Object{ [void](Add-NewRow($WorkSheet)) }
-[void](Add-NewColumn($WorkSheet)) 
+# Format data added
+Format-NewWorksheet -worksheet $WorkSheet
 
 
 
