@@ -16,7 +16,7 @@ function Add-NewColumn($workSheet){
 function Find-Replace{
     param([__ComObject]$range, [String]$SearchString, [String]$ReplaceString)
     
-    $Search = $range.find($SearchString)
+    $Search = $range.find($SearchString, [Type]::Missing,[Type]::Missing,1)
     if ($null -ne $search) {
 	    $FirstAddress = $search.Address
 	    do {
