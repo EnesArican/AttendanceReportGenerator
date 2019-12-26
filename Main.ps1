@@ -31,7 +31,6 @@ $Workbook.worksheets.add() | Out-Null
 $WorkSheet = $Workbook.worksheets.Item(1)
 $WorkSheet.activate()
 
-
 Set-IhvanNames -worksheet $WorkSheet -nameArray $NameArray
 Set-DatesAndRecords -worksheet $WorkSheet -attendanceHash $AttendanceHash
 
@@ -39,7 +38,6 @@ Write-Progress -Activity "Formatting" -Status "30% Complete - Making new Workshe
 
 # Format data added
 Format-NewWorksheet -worksheet $WorkSheet
-
 
 
 $Excel.DisplayAlerts = $false

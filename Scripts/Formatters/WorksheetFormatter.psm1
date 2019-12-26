@@ -6,7 +6,7 @@ function Add-NewRow($workSheet){
     $RowRange.insert($xlShiftDown)
 }
 
-function Add-NewColumn($workSheet){
+function Add-NewColumn($worksheet){
     $xlShiftRight = -4161
     $ColumnRange = $worksheet.cells.item(1,1).entireColumn
     $ColumnRange.activate()
@@ -44,6 +44,10 @@ function Add-FormatConditions([__ComObject]$range){
     $range.FormatConditions.Add(1,3,"IZINLI") | Out-Null
     $range.FormatConditions.Item(3).interior.color = RGB 255 235 156
     $range.FormatConditions.Item(3).font.color = RGB 156 101 0
+
+    $range.FormatConditions.Add(1,3,"HASTA") | Out-Null
+    $range.FormatConditions.Item(4).interior.color = RGB 230 184 183
+    $range.FormatConditions.Item(4).font.color = RGB 0 32 96
 }
 
 
