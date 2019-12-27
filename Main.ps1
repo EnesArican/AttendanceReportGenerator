@@ -1,8 +1,10 @@
 
 Import-Module .\Scripts\DataManager.psm1
 Import-Module .\Scripts\ExcelUtils.psm1
+Import-Module .\Scripts\HeadersManager.psm1
 
-
+#Incase you need it
+#$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
 
 #Write-Progress -Activity "Formatting" -Status "0% Complete - Opening Excel Document" -PercentComplete 0
 
@@ -39,6 +41,11 @@ Write-Progress -Activity "Formatting" -Status "30% Complete - Making new Workshe
 # Format data added
 Format-NewWorksheet -worksheet $WorkSheet
 
+# Add  headers
+Set-WorksheetHeaders -worksheet $WorkSheet
+
+# Format headers
+#Format-WorksheetHeaders -worksheet $WorkSheet
 
 $Excel.DisplayAlerts = $false
 $Workbook.SaveAs("C:\Temp\daily_report_12.xlsx")

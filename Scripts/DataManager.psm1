@@ -23,7 +23,7 @@ function Get-DatesAndRecords($worksheet, [__ComObject]$range, [String]$dateStrin
         
         } while ( $null -ne $DateSearch -and $DateSearch.Address() -ne $FirstAddress)
     }
-    $attendanceHash
+    $attendanceHash.GetEnumerator() | sort-Object -Property name
 }
 
 function Get-IhvanNames($worksheet,  [__ComObject]$range, [String]$nameString){

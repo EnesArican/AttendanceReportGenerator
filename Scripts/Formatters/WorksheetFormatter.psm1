@@ -41,7 +41,7 @@ function Add-FormatConditions([__ComObject]$range){
     $range.FormatConditions.Item(2).interior.color = RGB 255 199 206
     $range.FormatConditions.Item(2).font.color = RGB 156 0 6
 
-    $range.FormatConditions.Add(1,3,"IZINLI") | Out-Null
+    $range.FormatConditions.Add(1,3,"İZİNLİ") | Out-Null
     $range.FormatConditions.Item(3).interior.color = RGB 255 235 156
     $range.FormatConditions.Item(3).font.color = RGB 156 101 0
 
