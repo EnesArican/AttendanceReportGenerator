@@ -26,5 +26,30 @@ function Format-NewWorksheet($workSheet){
     Format-IhvanNameCells -range $Range
 }
 
+function Format-WorksheetHeaders($ws){
+    
+    $Range = $ws.Range( $ws.Cells(5,1), $ws.Cells(5, $global:MaxUsedColumn))
+    Format-Days -range $Range
+    $Range = $ws.Range("A5","B5")
+    $Range.Font.Size = 9
+
+    $Range = $ws.Range( $ws.Cells(4,1), $ws.Cells(4, $MaxUsedColumn))
+    Format-Dates -range $Range
+
+    $Range = $ws.Range( $ws.Cells(6,1), $ws.Cells($global:MaxUsedRow + 3, 1))
+    Format-NumberingColumn -range $Range
+
+
+    $xlThin = 2
+    $xlContinuous = 1
+    $xlInsideVertical = 11
+    $xlInsideHorizontal	= 12
+
+    $Range =  $ws.Range( $ws.Cells(1,1), $ws.Cells($global:MaxUsedRow + 3, $global:MaxUsedColumn))
+    $Range.Borders.Item($xlInsideVertical).LineStyle = $xlContinuous
+    $Range.Borders.Item($xlInsideHorizontal).LineStyle = $xlContinuous
+    [void]($Range.BorderAround($xlContinuous,$xlThin))
+}
+
 
 Export-ModuleMember -Function 'Format-*'

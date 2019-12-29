@@ -62,6 +62,7 @@ function Set-IhvanNames($worksheet, $nameArray){
         $worksheet.cells.Item($row, 1) = $name
         $row++
     }
+    $global:MaxUsedRow = $row
 }
 
 Export-ModuleMember -Function 'Get-*'

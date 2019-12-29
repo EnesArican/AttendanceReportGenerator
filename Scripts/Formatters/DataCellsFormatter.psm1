@@ -1,3 +1,4 @@
+Import-Module .\Scripts\Formatters\WorksheetFormatter.psm1
 
 [Int32]$xlAlignCenter = -4108
 [Int32]$xlAlignLeft = -4131

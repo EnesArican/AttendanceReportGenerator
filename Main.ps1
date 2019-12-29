@@ -3,8 +3,15 @@ Import-Module .\Scripts\DataManager.psm1
 Import-Module .\Scripts\ExcelUtils.psm1
 Import-Module .\Scripts\HeadersManager.psm1
 
-#Incase you need it
-#$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding = New-Object System.Text.UTF8Encoding
+
+$xlOpenXMLWorkbook = 51
+
+# load into Excel
+$excel = New-Object -ComObject Excel.Application 
+$excel.DisplayAlerts = $false
+$excel.Workbooks.Open("C:\Temp\daily_report.csv").SaveAs("C:\Temp\daily_report.xlsx",$xlOpenXMLWorkbook)
+$excel.Quit()
+
 
 #Write-Progress -Activity "Formatting" -Status "0% Complete - Opening Excel Document" -PercentComplete 0
 
@@ -45,10 +52,10 @@ Format-NewWorksheet -worksheet $WorkSheet
 Set-WorksheetHeaders -worksheet $WorkSheet
 
 # Format headers
-#Format-WorksheetHeaders -worksheet $WorkSheet
+Format-WorksheetHeaders -ws $WorkSheet
 
 $Excel.DisplayAlerts = $false
-$Workbook.SaveAs("C:\Temp\daily_report_12.xlsx")
+$Workbook.SaveAs("C:\Temp\daily_report.xlsx")
 $Workbook.Close()
 $Excel.Quit()
 
