@@ -3,8 +3,8 @@ Import-Module .\Scripts\Formatters\WorksheetFormatter.psm1
 Import-Module .\Scripts\Formatters\HeaderCellsFormatter.psm1
 
 
-function Format-NewWorksheet($workSheet){
-    $Range = $Worksheet.Range("B2","CC300")
+function Format-Data($ws){
+    $Range = $ws.Range("B2","CC300")
 
     # Replace values 
     Find-Replace -range $Range -SearchString 'P' -ReplaceString 'VAR'
@@ -22,14 +22,15 @@ function Format-NewWorksheet($workSheet){
     # Format cell structures
     Format-DateAndRecordCells -range $Range
 
-    $Range = $Worksheet.Range("A2","A300")
+    $Range = $ws.Range("A2","A300")
     Format-IhvanNameCells -range $Range
 }
 
-function Format-WorksheetHeaders($ws){
+function Format-Headers($ws){
     
     $Range = $ws.Range( $ws.Cells(5,1), $ws.Cells(5, $global:MaxUsedColumn))
     Format-Days -range $Range
+
     $Range = $ws.Range("A5","B5")
     $Range.Font.Size = 9
 
@@ -40,12 +41,18 @@ function Format-WorksheetHeaders($ws){
     Format-NumberingColumn -range $Range
 
 
+   
+    $Range =  $ws.Range( $ws.Cells(1,1), $ws.Cells($global:MaxUsedRow + 3, $global:MaxUsedColumn))
+    Add-Borders -range $Range
+}
+
+
+function Add-Borders([__ComObject]$Range){
     $xlThin = 2
     $xlContinuous = 1
     $xlInsideVertical = 11
     $xlInsideHorizontal	= 12
 
-    $Range =  $ws.Range( $ws.Cells(1,1), $ws.Cells($global:MaxUsedRow + 3, $global:MaxUsedColumn))
     $Range.Borders.Item($xlInsideVertical).LineStyle = $xlContinuous
     $Range.Borders.Item($xlInsideHorizontal).LineStyle = $xlContinuous
     [void]($Range.BorderAround($xlContinuous,$xlThin))

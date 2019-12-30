@@ -5,7 +5,6 @@ Import-Module .\Scripts\HeadersManager.psm1
 
 Write-Progress -Activity "Formatting" -Status "0% Complete - Opening Document" -PercentComplete 0
 
-
 $xlOpenXMLWorkbook = 51
 
 # load into Excel
@@ -14,7 +13,6 @@ $Excel = New-Object -ComObject Excel.Application
 $Excel.DisplayAlerts = $false
 $Excel.Workbooks.Open("C:\Temp\daily_report.csv").SaveAs($Path, $xlOpenXMLWorkbook)
 #$excel.Quit()
-
 
 #$Excel = New-Object -Com Excel.Application
 $Workbook =  $Excel.Workbooks.Open($Path, 0, $false) 
@@ -44,13 +42,13 @@ Set-IhvanNames -worksheet $WorkSheet -nameArray $NameArray
 Set-DatesAndRecords -worksheet $WorkSheet -attendanceHash $AttendanceHash
 
 # Format data
-Format-NewWorksheet -worksheet $WorkSheet
+Format-Data -ws $Worksheet
 
 # Insert  headers
-Set-WorksheetHeaders -worksheet $WorkSheet
+Set-WorksheetHeaders -worksheet $Worksheet
 
 # Format headers
-Format-WorksheetHeaders -ws $WorkSheet
+Format-Headers -ws $Worksheet
 
 $Excel.DisplayAlerts = $false
 $Workbook.SaveAs("C:\Temp\daily_report.xlsx")
