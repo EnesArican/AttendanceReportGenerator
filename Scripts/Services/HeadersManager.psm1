@@ -77,4 +77,4 @@ function Set-Culture([System.Globalization.CultureInfo] $culture)
 
 
 
-Export-ModuleMember -Function 'Set-WorksheetHeaders'
+Export-ModuleMember -Function 'Set-Headers'
