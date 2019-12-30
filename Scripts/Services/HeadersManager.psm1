@@ -2,54 +2,54 @@ Import-Module .\Scripts\Formatters\WorksheetFormatter.psm1
 Import-Module .\Scripts\Formatters\HeaderCellsFormatter.psm1
 
 # to be set in function
-#$global:MaxUsedRow = 1
+$global:MaxUsedRow = 1
 $global:MaxUsedColumn = 1
 $global:Month = ""
 
-function Set-WorksheetHeaders($worksheet){
+function Set-Headers($worksheet){
     # Add columns and rows to new worksheet
     1..4 | ForEach-Object{ [void](Add-NewRow($worksheet)) }
     [void](Add-NewColumn($worksheet)) 
 
     # Number Rows
-    Set-NumberingColumn -worksheet $worksheet
+    Set-NumberingColumn -ws $worksheet
 
     # Add dates to columns
-    Set-Dates -worksheet $worksheet
+    Set-Dates -ws $worksheet
 
     # Add Title Headers
     Set-Title -ws $worksheet
 }
 
-function Set-NumberingColumn($worksheet){
-    $row = 5
-    $worksheet.cells.item($row,1) = 'SN.'
-    $worksheet.cells.item($row,2) = 'ADI SOYADI'
-    $row++
+function Set-NumberingColumn($ws){
+    $Row = 5
+    $ws.cells.item($Row,1) = 'SN.'
+    $ws.cells.item($Row,2) = 'ADI SOYADI'
+    $Row++
     $DataRowNumber = 1
     do{
-        $worksheet.cells.item($row,1) = $DataRowNumber
-        $row++
+        $ws.cells.item($Row,1) = $DataRowNumber
+        $Row++
         $DataRowNumber++
-    } while ($null -ne  $worksheet.cells.item($row,2).value())
+    } while ($null -ne  $ws.cells.item($Row,2).value())
 }
 
-function Set-Dates($worksheet){
+function Set-Dates($ws){
     Set-Culture tr-TR
     
     $column = 3
 
     do{
-        $dateString = $worksheet.cells.item(5,$column).value()
+        $dateString = $ws.cells.item(5,$column).value()
         $dateString = $dateString.Substring($dateString.Length - 11)
 
         $date = [datetime]$dateString
 
-        $worksheet.cells.item(4,$column) = $date.ToString("dd\/MM\/yyyy")
-        $worksheet.cells.item(5,$column) = $date.ToString("dddd")
+        $ws.cells.item(4,$column) = $date.ToString("dd\/MM\/yyyy")
+        $ws.cells.item(5,$column) = $date.ToString("dddd")
         $column++
 
-    } while ($null -ne  $worksheet.cells.item(5,$column).value())
+    } while ($null -ne  $ws.cells.item(5,$column).value())
 
     $global:MaxUsedColumn = $column - 1
     $global:Month = $date.ToString("MMMM").ToUpper()
@@ -75,9 +75,6 @@ function Set-Culture([System.Globalization.CultureInfo] $culture)
     [System.Threading.Thread]::CurrentThread.CurrentCulture = $culture
 }
 
-function Get-WeekNumber([datetime]$DateTime = (Get-Date)) {
-    $cultureInfo = [System.Globalization.CultureInfo]::CurrentCulture
-    $cultureInfo.Calendar.GetWeekOfYear($DateTime,$cultureInfo.DateTimeFormat.CalendarWeekRule,$cultureInfo.DateTimeFormat.FirstDayOfWeek)
-}
+
 
 Export-ModuleMember -Function 'Set-WorksheetHeaders'

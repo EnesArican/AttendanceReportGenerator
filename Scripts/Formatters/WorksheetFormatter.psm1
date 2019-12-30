@@ -1,5 +1,5 @@
 
-function Add-NewRow($workSheet){
+function Add-NewRow($worksheet){
     $xlShiftDown = -4121
     $RowRange = $worksheet.cells.item(1,1).entireRow
     $RowRange.activate()
