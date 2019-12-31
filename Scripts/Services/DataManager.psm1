@@ -1,4 +1,32 @@
 
+
+
+$script:DataHash = [ordered]@{}
+$script:DatesArray = @() 
+
+
+function Get-Data(){
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 function Get-DatesAndRecords($worksheet, [__ComObject]$range, [String]$dateString){
 
     $attendanceHash = [ordered]@{}
@@ -41,6 +69,11 @@ function Get-IhvanNames($worksheet,  [__ComObject]$range, [String]$nameString){
 }
 
 
+function Set-Data($ws, $nameArray, $attendanceHash){
+    Set-IhvanNames -worksheet $ws -nameArray $nameArray
+    Set-DatesAndRecords -worksheet $ws -attendanceHash $attendanceHash
+}
+
 function Set-DatesAndRecords($worksheet, $attendanceHash){
     $column = 2
 
@@ -66,4 +99,4 @@ function Set-IhvanNames($worksheet, $nameArray){
 }
 
 Export-ModuleMember -Function 'Get-*'
-Export-ModuleMember -Function 'Set-*'
+Export-ModuleMember -Function 'Set-Data*'

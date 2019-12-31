@@ -1,64 +1,39 @@
+Set-StrictMode -Version Latest
 
 Import-Module .\Scripts\Services\DataManager.psm1
 Import-Module .\Scripts\Services\HeadersManager.psm1
+Import-Module .\Scripts\Services\ExcelDocHandler.psm1
 Import-Module .\Scripts\ExcelUtils.psm1
+Import-Module .\Scripts\ProgressWriter.psm1
 
+Update-Progress -percentage 0 -text "Opening Document"
+Open-ExcelDoc -path "C:\Temp\daily_report.xlsx"
+$Worksheet = Get-Worksheet
 
-Write-Progress -Activity "Formatting" `
-    -Status "0% Complete - Opening Document" -PercentComplete 0
-
-$xlOpenXMLWorkbook = 51
-
-# load into Excel
-$Path = "C:\Temp\daily_report.xlsx"
-$Excel = New-Object -ComObject Excel.Application 
-$Excel.DisplayAlerts = $false
-$Excel.Workbooks.Open("C:\Temp\daily_report.csv").SaveAs($Path, $xlOpenXMLWorkbook)
-#$excel.Quit()
-
-#$Excel = New-Object -Com Excel.Application
-$Workbook =  $Excel.Workbooks.Open($Path, 0, $false) 
-$Worksheet = $Workbook.worksheets.Item(1)
-$Worksheet.activate()
-
-Write-Progress -Activity "Formatting" `
-    -Status "10% Complete - Getting Records" -PercentComplete 10 
-
+Update-Progress -percent 10 -text "Getting Records" 
 $Range = $Worksheet.Range("A1","A3000")
 
 $AttendanceHash = Get-DatesAndRecords -worksheet $Worksheet -range $Range -dateString 'Date:*'
 $NameArray = Get-IhvanNames -worksheet $WorkSheet -range $Range -nameString 'Last Name'
 
-Write-Progress -Activity "Formatting" `
-    -Status "20% Complete - Making new Worksheet" -PercentComplete 20 
+#Update-Progress -percent 20 -text "Making new Worksheet"
+#
+## Add WorkSheet
+#$Workbook.worksheets.add() | Out-Null
+#$Worksheet = $Workbook.worksheets.Item(1)
+#$Worksheet.activate()
+#
+#Update-Progress -percent 40 -text "Adding records"
+#
+#Set-Data -ws $Worksheet -nameArray $NameArray -attendanceHash $AttendanceHash
+#Format-Data -ws $Worksheet
+#
+#Update-Progress -percent 75 -text "Adding Headers"
+#
+#Set-Headers -worksheet $Worksheet
+#Format-Headers -ws $Worksheet
 
-# Add WorkSheet
-$Workbook.worksheets.add() | Out-Null
-$Worksheet = $Workbook.worksheets.Item(1)
-$Worksheet.activate()
+Close-ExcelDoc
 
-Write-Progress -Activity "Formatting" `
-    -Status "40% Complete - Adding Records" -PercentComplete 40 
-
-
-# Insert data
-Set-IhvanNames -worksheet $Worksheet -nameArray $NameArray
-Set-DatesAndRecords -worksheet $WorkSheet -attendanceHash $AttendanceHash
-
-Format-Data -ws $Worksheet
-
-Write-Progress -Activity "Formatting" `
-    -Status "75% Complete - Adding Headers" -PercentComplete 75 
-
-Set-Headers -worksheet $Worksheet
-Format-Headers -ws $Worksheet
-
-$Excel.DisplayAlerts = $false
-$Workbook.SaveAs($Path)
-$Workbook.Close()
-$Excel.Quit()
-
-Write-Progress -Activity "Formatting" `
-    -Status "100% Complete" -PercentComplete 100 -Completed
-
+Update-Progress -percent 100 -text  "Complete" 
 Write-Host "Done" -ForegroundColor Green
