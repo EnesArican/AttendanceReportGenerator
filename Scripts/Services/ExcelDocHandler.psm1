@@ -15,9 +15,9 @@ function Open-ExcelDoc($path){
 
 
 function Get-Worksheet(){
-    $script:worksheet = $script:Workbook.worksheets.Item(1)
-    $script:worksheet.activate()
-    return [ref]$script:worksheet
+    $script:Worksheet = $script:Workbook.worksheets.Item(1)
+    $script:Worksheet.activate()
+    return $script:Worksheet
 }
 
 

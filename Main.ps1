@@ -11,10 +11,12 @@ Open-ExcelDoc -path "C:\Temp\daily_report.xlsx"
 $Worksheet = Get-Worksheet
 
 Update-Progress -percent 10 -text "Getting Records" 
-$Range = $Worksheet.Range("A1","A3000")
 
-$AttendanceHash = Get-DatesAndRecords -worksheet $Worksheet -range $Range -dateString 'Date:*'
-$NameArray = Get-IhvanNames -worksheet $WorkSheet -range $Range -nameString 'Last Name'
+Get-Data -ws $Worksheet
+
+
+#$AttendanceHash = Get-DatesAndRecords -worksheet $Worksheet -range $Range -dateString 'Date:*'
+#$NameArray = Get-IhvanNames -worksheet $WorkSheet -range $Range -nameString 'Last Name'
 
 #Update-Progress -percent 20 -text "Making new Worksheet"
 #

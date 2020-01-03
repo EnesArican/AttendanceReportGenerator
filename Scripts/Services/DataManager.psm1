@@ -5,16 +5,51 @@ $script:DataHash = [ordered]@{}
 $script:DatesArray = @() 
 
 
-function Get-Data(){
+function Get-Data($ws){
+    $nameString = 'Last Name'
+    $range = $ws.Range("A1","A3000")
+    $recordSet = 0
+    $nameSearch = $range.find($nameString)
+    
+    if ($null -ne $nameSearch) {
+        $firstAddress = $nameSearch.Address()
+       do {
+            $recordSet++
+            $row = $nameSearch.row + 1
+            do {
+                $lastName = $ws.cells.item($row,1).value()
+                Add-AttendanceToHash -ws $ws -row $row -lastName $lastName
+                $row++
+            } while ($null -ne $lastName)
+            # if some names do not have the same number as recordset add null(or something that would be turned to empty)
+            # if a new name has been added populate the previous date records as null(...same as above...)
+            $nameSearch = $range.FindNext($nameSearch) 
+        } while ( $null -ne $nameSearch -and $nameSearch.Address() -ne $firstAddress)
+    }
 
+    $script:DataHash | Out-String | Write-Host
+    #$attendanceHash.GetEnumerator() | sort-Object -Property name
 
 }
 
 
 
+function Add-AttendanceToHash($ws, $row, $lastName){
 
+    $value = $ws.cells.item($row,3).value()
+    $firstName =  $ws.cells.item($row,2).value()
+   
+    $key = $FirstName + ' ' + $LastName
 
+    if($script:DataHash.Keys -contains $key){
+        $script:DataHash[$key].Add($value)
+    }else {
+        $attendanceArr = New-Object System.Collections.Generic.List[System.Object]
+        $attendanceArr.Add($value)
+        $script:DataHash.Add($key, $attendanceArr)
+    }
 
+}
 
 
 
