@@ -20,6 +20,8 @@ function Get-Data($ws){
                 if ($lastName){ Add-AttendanceToHash -ws $ws -row $row -lastName $lastName -recordSet $recordSet }
                 $row++
             } while ($null -ne $lastName)
+
+            #if there is a name with no data for this date then add emp to it
             
             $nameSearch = $range.FindNext($nameSearch) 
         } while ( $null -ne $nameSearch -and $nameSearch.Address() -ne $firstAddress)
@@ -75,6 +77,7 @@ function Set-Data($ws){
     foreach ($h in $script:DataHash.GetEnumerator){
         $column = 1
         $ws.cells.Item($row, $column) = $h.Name
+        [array]::Reverse($h.Value)
         foreach ($v in $h.Value){
             $column++
             $worksheet.cells.Item($row, $column) = $v
@@ -82,6 +85,14 @@ function Set-Data($ws){
         $row++
     }
 }
+
+function Set-DateValues{}
+
+
+
+
+
+
 
 function Set-Data($ws, $nameArray, $attendanceHash){
     Set-IhvanNames -worksheet $ws -nameArray $nameArray
