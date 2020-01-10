@@ -15,6 +15,7 @@ Update-Progress -percent 10 -text "Getting Records"
 Get-Data -ws $Worksheet
 Get-Dates -ws $Worksheet
 
+
 #$AttendanceHash = Get-DatesAndRecords -worksheet $Worksheet -range $Range -dateString 'Date:*'
 #$NameArray = Get-IhvanNames -worksheet $WorkSheet -range $Range -nameString 'Last Name'
 
