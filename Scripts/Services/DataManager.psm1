@@ -2,7 +2,8 @@
 
 
 $script:DataHash = [ordered]@{}
-$script:DatesArray = @() 
+$script:DatesArray = New-Object System.Collections.Generic.List[System.Object]
+
 
 
 function Get-Data($ws){
@@ -18,31 +19,21 @@ function Get-Data($ws){
             $row = $nameSearch.row + 1
             do {
                 $lastName = $ws.cells.item($row,1).value()
-                Add-AttendanceToHash -ws $ws -row $row -lastName $lastName -recordSet $recordSet
+                if ($lastName){ Add-AttendanceToHash -ws $ws -row $row -lastName $lastName -recordSet $recordSet }
                 $row++
             } while ($null -ne $lastName)
-            # if some names do not have the same number as recordset add null(or something that would be turned to empty)
-            # if a new name has been added populate the previous date records as null(...same as above...)
-            
-      
-           
             
             $nameSearch = $range.FindNext($nameSearch) 
         } while ( $null -ne $nameSearch -and $nameSearch.Address() -ne $firstAddress)
     }
 
-    $script:DataHash | Out-String | Write-Host
-    #$attendanceHash.GetEnumerator() | sort-Object -Property name
-
+    $script:DataHash = $script:DataHash.GetEnumerator() | sort-Object -Property name
+    #$script:DataHash.GetEnumerator() | Out-String | Write-Host
 }
 
-
-
 function Add-AttendanceToHash($ws, $row, $lastName, $recordSet){
-
     $value = $ws.cells.item($row,3).value()
     $firstName =  $ws.cells.item($row,2).value()
-   
     $key = $FirstName + ' ' + $LastName
 
     if($script:DataHash.Keys -contains $key){
@@ -51,15 +42,33 @@ function Add-AttendanceToHash($ws, $row, $lastName, $recordSet){
         $attendanceArr = New-Object System.Collections.Generic.List[System.Object]
        
         #need to test this
-        0..$recordSet | ForEach-Object{
-       	$attendanceArr.Add("emp")
+        if($recordSet -ne 1){
+            1..($recordSet-1) | % { $attendanceArr.Add("emp") }
         }
-        
         
         $attendanceArr.Add($value)
         $script:DataHash.Add($key, $attendanceArr)
     }
 
+}
+
+
+function Get-Dates($ws){
+    $dateString = 'Date:*'
+    $range = $ws.Range("A1","A3000")
+    
+    $dateSearch = $range.find($dateString)
+    if ($null -ne $dateSearch) {
+        $FirstAddress = $dateSearch.Address()
+       do { 
+            $row = $dateSearch.row
+            $date = $ws.cells.item($row,1).value()            
+            $script:DatesArray.Add($date)
+
+    	    $dateSearch = $range.FindNext($dateSearch)
+        
+        } while ( $null -ne $dateSearch -and $dateSearch.Address() -ne $FirstAddress)
+    }
 }
 
 
