@@ -28,7 +28,7 @@ function Get-Data($ws){
     }
 
     $script:DataHash = $script:DataHash.GetEnumerator() | sort-Object -Property name
-    #$script:DataHash.GetEnumerator() | Out-String | Write-Host
+    $script:DataHash.GetEnumerator() | Out-String | Write-Host
 }
 
 function Add-AttendanceToHash($ws, $row, $lastName, $recordSet){
@@ -41,7 +41,6 @@ function Add-AttendanceToHash($ws, $row, $lastName, $recordSet){
     }else {
         $attendanceArr = New-Object System.Collections.Generic.List[System.Object]
        
-        #need to test this
         if($recordSet -ne 1){
             1..($recordSet-1) | % { $attendanceArr.Add("emp") }
         }
@@ -74,16 +73,20 @@ function Get-Dates($ws){
 
 function Set-Data($ws){
     $row = 2
-    foreach ($h in $script:DataHash.GetEnumerator){
+    foreach ($h in $script:DataHash.GetEnumerator()){
         $column = 1
         $ws.cells.Item($row, $column) = $h.Name
+       
+        #not working need to fix
         [array]::Reverse($h.Value)
+       
         foreach ($v in $h.Value){
             $column++
-            $worksheet.cells.Item($row, $column) = $v
+            $ws.cells.Item($row, $column) = $v
         }
         $row++
     }
+    
 }
 
 function Set-DateValues{}
@@ -94,10 +97,10 @@ function Set-DateValues{}
 
 
 
-function Set-Data($ws, $nameArray, $attendanceHash){
-    Set-IhvanNames -worksheet $ws -nameArray $nameArray
-    Set-DatesAndRecords -worksheet $ws -attendanceHash $attendanceHash
-}
+# function Set-Data($ws, $nameArray, $attendanceHash){
+#     Set-IhvanNames -worksheet $ws -nameArray $nameArray
+#     Set-DatesAndRecords -worksheet $ws -attendanceHash $attendanceHash
+# }
 
 function Set-DatesAndRecords($worksheet, $attendanceHash){
     $column = 2

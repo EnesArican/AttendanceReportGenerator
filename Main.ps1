@@ -21,10 +21,12 @@ Get-Dates -ws $Worksheet
 
 #Update-Progress -percent 20 -text "Making new Worksheet"
 #
-## Add WorkSheet
-#$Workbook.worksheets.add() | Out-Null
-#$Worksheet = $Workbook.worksheets.Item(1)
-#$Worksheet.activate()
+# Add WorkSheet
+Add-Worksheet
+$Worksheet = Get-Worksheet
+
+Set-Data -ws $Worksheet
+
 #
 #Update-Progress -percent 40 -text "Adding records"
 #

@@ -13,6 +13,10 @@ function Open-ExcelDoc($path){
     $script:Workbook =  $script:Excel.Workbooks.Open($Path, 0, $false) 
 }
 
+function Add-Worksheet(){
+    $script:Workbook.worksheets.add() | Out-Null
+}
+
 
 function Get-Worksheet(){
     $script:Worksheet = $script:Workbook.worksheets.Item(1)
@@ -37,3 +41,5 @@ function Close-ExcelDoc(){
 Export-ModuleMember -Function 'Open-*'
 Export-ModuleMember -Function 'Get-*'
 Export-ModuleMember -Function 'Close-*'
+Export-ModuleMember -Function 'Add-*'
+
