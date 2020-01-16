@@ -44,9 +44,4 @@ function Format-Title([__ComObject]$Range){
 }
 
 
-
-
-
-
-
 Export-ModuleMember -Function 'Format-*'

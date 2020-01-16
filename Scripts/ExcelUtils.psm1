@@ -1,6 +1,7 @@
 Import-Module .\Scripts\Formatters\DataCellsFormatter.psm1
 Import-Module .\Scripts\Formatters\WorksheetFormatter.psm1
 Import-Module .\Scripts\Formatters\HeaderCellsFormatter.psm1
+Import-Module .\Scripts\Models\UsedRange.psm1
 
 
 function Format-Data($ws){
@@ -11,6 +12,7 @@ function Format-Data($ws){
     Find-Replace -range $Range -SearchString 'A' -ReplaceString 'YOK'
     Find-Replace -range $Range -SearchString 'TU' -ReplaceString 'İZİNLİ'
     Find-Replace -range $Range -SearchString 'M' -ReplaceString 'HASTA'
+    Find-Replace -range $Range -SearchString 'emp' -ReplaceString ''
 
     # Add validation
     $Range.Validation.Delete()
@@ -27,22 +29,22 @@ function Format-Data($ws){
 }
 
 function Format-Headers($ws){
-    
-    $Range = $ws.Range( $ws.Cells(5,1), $ws.Cells(5, $global:MaxUsedColumn))
+    $maxColumn = Get-MaxUsedColumn
+    $maxRow = Get-MaxUsedRow
+
+    $Range = $ws.Range( $ws.Cells(5,1), $ws.Cells(5, $maxColumn))
     Format-Days -range $Range
 
     $Range = $ws.Range("A5","B5")
     $Range.Font.Size = 9
 
-    $Range = $ws.Range( $ws.Cells(4,1), $ws.Cells(4, $MaxUsedColumn))
+    $Range = $ws.Range( $ws.Cells(4,1), $ws.Cells(4, $maxColumn))
     Format-Dates -range $Range
 
-    $Range = $ws.Range( $ws.Cells(6,1), $ws.Cells($global:MaxUsedRow + 3, 1))
+    $Range = $ws.Range( $ws.Cells(6,1), $ws.Cells($maxRow + 3, 1))
     Format-NumberingColumn -range $Range
 
-
-   
-    $Range =  $ws.Range( $ws.Cells(1,1), $ws.Cells($global:MaxUsedRow + 3, $global:MaxUsedColumn))
+    $Range =  $ws.Range( $ws.Cells(1,1), $ws.Cells($maxRow + 3, $maxColumn))
     Add-Borders -range $Range
 }
 

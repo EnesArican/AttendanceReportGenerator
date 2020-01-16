@@ -1,24 +1,17 @@
 Import-Module .\Scripts\Formatters\WorksheetFormatter.psm1
 Import-Module .\Scripts\Formatters\HeaderCellsFormatter.psm1
+Import-Module .\Scripts\Models\UsedRange.psm1
 
-# to be set in function
-$global:MaxUsedRow = 1
-$global:MaxUsedColumn = 1
-$global:Month = ""
+$script:Month = ""
 
-function Set-Headers($worksheet){
+function Set-Headers($ws){
     # Add columns and rows to new worksheet
-    1..4 | ForEach-Object{ [void](Add-NewRow($worksheet)) }
-    [void](Add-NewColumn($worksheet)) 
-
-    # Number Rows
-    Set-NumberingColumn -ws $worksheet
-
-    # Add dates to columns
-    Set-Dates -ws $worksheet
-
-    # Add Title Headers
-    Set-Title -ws $worksheet
+    1..4 | ForEach-Object{ [void](Add-NewRow($ws)) }
+    [void](Add-NewColumn($ws)) 
+    
+    Set-NumberingColumn -ws $ws
+    Set-Dates -ws $ws
+    Set-Title -ws $ws
 }
 
 function Set-NumberingColumn($ws){
@@ -51,20 +44,21 @@ function Set-Dates($ws){
 
     } while ($null -ne  $ws.cells.item(5,$column).value())
 
-    $global:MaxUsedColumn = $column - 1
-    $global:Month = $date.ToString("MMMM").ToUpper()
+    Set-MaxUsedColumn -value ($column - 1)
+    $script:Month = $date.ToString("MMMM").ToUpper()
 
     Set-Culture en-GB
 }
 
 function Set-Title($ws){
+    $maxColumn = Get-MaxUsedColumn
     $ws.Cells.Item(1,1) = "AYLIK HATİM TAKİP ÇİZELGESİ"
     Format-Title -Range $ws.Range("A1")
-    $ws.Range( $ws.Cells(1,1), $ws.Cells(2, $MaxUsedColumn)).Merge()
+    $ws.Range( $ws.Cells(1,1), $ws.Cells(2, $maxColumn)).Merge()
 
-    $ws.Cells.Item(3,1) = "$($Month)"
+    $ws.Cells.Item(3,1) = "$($script:Month)"
     Format-Title -Range $ws.Range("A3")
-    $ws.Range( $ws.Cells(3,1), $ws.Cells(3, $MaxUsedColumn)).Merge()
+    $ws.Range( $ws.Cells(3,1), $ws.Cells(3, $maxColumn)).Merge()
 
     
 }
