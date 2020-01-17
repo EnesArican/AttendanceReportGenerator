@@ -2,9 +2,12 @@ Import-Module .\Scripts\Formatters\DataCellsFormatter.psm1
 Import-Module .\Scripts\Formatters\WorksheetFormatter.psm1
 Import-Module .\Scripts\Formatters\HeaderCellsFormatter.psm1
 Import-Module .\Scripts\Models\UsedRange.psm1
+Import-Module .\Scripts\ProgressWriter.psm1
 
 
 function Format-Data($ws){
+    Write-Host "Working on formatting..." -NoNewline
+
     $Range = $ws.Range("B2","CC300")
 
     # Replace values 
@@ -26,6 +29,8 @@ function Format-Data($ws){
 
     $Range = $ws.Range("A2","A300")
     Format-IhvanNameCells -range $Range
+
+    Write-Ok
 }
 
 function Format-Headers($ws){

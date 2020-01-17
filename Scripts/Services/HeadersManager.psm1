@@ -10,7 +10,7 @@ function Set-Headers($ws){
     [void](Add-NewColumn($ws)) 
     
     Set-NumberingColumn -ws $ws
-    Set-Dates -ws $ws
+    Set-DateFormat -ws $ws
     Set-Title -ws $ws
 }
 
@@ -27,9 +27,10 @@ function Set-NumberingColumn($ws){
     } while ($null -ne  $ws.cells.item($Row,2).value())
 }
 
-function Set-Dates($ws){
+function Set-DateFormat($ws){
     Set-Culture tr-TR
     
+    $ws.Cells.Item(4,2) = "YOKLAMA TARIHLERI"
     $column = 3
 
     do{
@@ -44,9 +45,7 @@ function Set-Dates($ws){
 
     } while ($null -ne  $ws.cells.item(5,$column).value())
 
-    Set-MaxUsedColumn -value ($column - 1)
     $script:Month = $date.ToString("MMMM").ToUpper()
-
     Set-Culture en-GB
 }
 

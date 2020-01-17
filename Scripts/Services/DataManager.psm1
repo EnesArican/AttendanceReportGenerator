@@ -1,10 +1,13 @@
 
 Import-Module .\Scripts\Models\UsedRange.psm1
+Import-Module .\Scripts\ProgressWriter.psm1
 
 $script:DataHash = [ordered]@{}
 $script:DatesList = New-Object System.Collections.Generic.List[System.Object]
 
 function Get-Data($ws){
+    Write-Host "Getting names and attendance records..." -NoNewline
+
     $nameString = 'Last Name'
     $range = $ws.Range("A1","A300")
     $recordSet = 0
@@ -30,6 +33,8 @@ function Get-Data($ws){
 
     $script:DataHash = $script:DataHash.GetEnumerator() | sort-Object -Property name
     #$script:DataHash.GetEnumerator() | Out-String | Write-Host
+
+    Write-Ok
 }
 
 function Add-AttendanceToHash($ws, $row, $lastName, $recordSet){
@@ -51,6 +56,8 @@ function Add-AttendanceToHash($ws, $row, $lastName, $recordSet){
 
 
 function Get-Dates($ws){
+    Write-Host "Getting dates..." -NoNewline
+
     $dateString = 'Date:*'
     $range = $ws.Range("A1","A300")
     
@@ -66,10 +73,14 @@ function Get-Dates($ws){
         
         } while ( $null -ne $dateSearch -and $dateSearch.Address() -ne $FirstAddress)
     }
+
+    Write-Ok
 }
 
 
 function Set-Data($ws){
+    Write-Host "Writing names and attendance records..." -NoNewline
+
     $row = 2
     foreach ($h in $script:DataHash.GetEnumerator()){
         $column = 1
@@ -84,10 +95,12 @@ function Set-Data($ws){
     }
     Set-MaxUsedRow -value $row
 
-    
+    Write-Ok    
 }
 
-function Set-DateValues($ws){
+function Set-Dates($ws){
+    Write-Host "Writing dates..." -NoNewline
+
     $column = 2
     $datesArray = $script:DatesList | % { $_ }
     [array]::Reverse($datesArray)
@@ -95,6 +108,9 @@ function Set-DateValues($ws){
         $ws.cells.Item(1, $column) = $date
         $column++
     }
+    Set-MaxUsedColumn -value ($column)
+
+    Write-Ok
 }
 
 
