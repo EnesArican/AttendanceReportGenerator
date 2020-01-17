@@ -5,7 +5,7 @@ Import-Module .\Scripts\Services\HeadersManager.psm1
 Import-Module .\Scripts\Services\ExcelDocHandler.psm1
 Import-Module .\Scripts\ExcelUtils.psm1
 
-Open-ExcelDoc -path "C:\Temp\daily_report.csv"
+Open-ExcelDoc -path "C:\Temp\daily_report.xlsx"
 $Worksheet = Get-Worksheet
 
 Get-Data -ws $Worksheet

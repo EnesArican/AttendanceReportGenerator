@@ -14,7 +14,7 @@ function Open-ExcelDoc($path){
     $script:Path = $path
     $script:Excel = New-Object -ComObject Excel.Application
     $script:Excel.DisplayAlerts = $false
-    $script:Excel.Workbooks.Open("C:\Temp\daily_report.csv").SaveAs($script:NewPath, $xlOpenXMLWorkbook)
+    $script:Excel.Workbooks.Open("C:\Temp\daily_report.csv").SaveAs($Path, $xlOpenXMLWorkbook)
     $script:Workbook =  $script:Excel.Workbooks.Open($Path, 0, $false) 
 
     Write-Ok
@@ -33,7 +33,7 @@ function Get-Worksheet(){
 
 
 function Close-ExcelDoc(){
-    $script:Workbook.Save()
+    $script:Workbook.SaveAs($script:NewPath)
     $script:Workbook.Close()
     $script:Excel.Quit()
 
