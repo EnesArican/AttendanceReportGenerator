@@ -1,5 +1,5 @@
 
-Import-Module .\Scripts\Models\UsedRange.psm1
+Import-Module .\Scripts\Models\Variables.psm1
 Import-Module .\Scripts\ProgressWriter.psm1
 
 $script:DataHash = [ordered]@{}
@@ -9,7 +9,7 @@ function Get-Data($ws){
     Write-Host "Getting names and attendance records..." -NoNewline
 
     $nameString = 'Last Name'
-    $range = $ws.Range("A1","A300")
+    $range = $ws.Range("A1","A600")
     $recordSet = 0
     $nameSearch = $range.find($nameString)
     
@@ -59,7 +59,7 @@ function Get-Dates($ws){
     Write-Host "Getting dates..." -NoNewline
 
     $dateString = 'Date:*'
-    $range = $ws.Range("A1","A300")
+    $range = $ws.Range("A1","A600")
     
     $dateSearch = $range.find($dateString)
     if ($null -ne $dateSearch) {
