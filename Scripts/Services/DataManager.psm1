@@ -9,6 +9,7 @@ function Get-Data($ws){
     Write-Host "Getting names and attendance records..." -NoNewline
 
     $nameString = 'Last Name'
+    $className = 'Fatih'
     $range = $ws.Range("A1","A900")
     $recordSet = 0
     $nameSearch = $range.find($nameString)

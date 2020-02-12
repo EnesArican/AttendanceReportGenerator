@@ -9,10 +9,13 @@ $script:Worksheet = $null
 function Open-ExcelDoc($path){
     Write-Host "Opening Excel Doc..." -NoNewline
 
-    $script:Path = $path
+    $xlOpenXMLWorkbook = 51
+    $tempPath = "C:\Temp\tempReport.xlsx"
+
     $script:Excel = New-Object -ComObject Excel.Application
     $script:Excel.DisplayAlerts = $false
-    $script:Workbook =  $script:Excel.Workbooks.Open($path, 0, $false) 
+    $script:Excel.Workbooks.Open($path).SaveAs($tempPath, $xlOpenXMLWorkbook)
+    $script:Workbook =  $script:Excel.Workbooks.Open($tempPath, 0, $false) 
 
     Write-Ok
 }

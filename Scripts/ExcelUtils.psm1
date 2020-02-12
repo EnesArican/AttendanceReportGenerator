@@ -22,7 +22,7 @@ function Format-Data($ws){
     $Range.Validation.Add(3, 1, 1, "VAR,YOK,İZİNLİ,HASTA") | Out-Null
 
     # Add format conditions (colour cells) 
-    Add-FormatConditions -range $Range
+    #Add-FormatConditions -range $Range
 
     # Format cell structures
     Format-DateAndRecordCells -range $Range
