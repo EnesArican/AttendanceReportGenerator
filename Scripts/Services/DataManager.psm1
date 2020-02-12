@@ -9,7 +9,7 @@ function Get-Data($ws){
     Write-Host "Getting names and attendance records..." -NoNewline
 
     $nameString = 'Last Name'
-    $range = $ws.Range("A1","A300")
+    $range = $ws.Range("A1","A900")
     $recordSet = 0
     $nameSearch = $range.find($nameString)
     
@@ -59,7 +59,7 @@ function Get-Dates($ws){
     Write-Host "Getting dates..." -NoNewline
 
     $dateString = 'Date:*'
-    $range = $ws.Range("A1","A300")
+    $range = $ws.Range("A1","A900")
     
     $dateSearch = $range.find($dateString)
     if ($null -ne $dateSearch) {
