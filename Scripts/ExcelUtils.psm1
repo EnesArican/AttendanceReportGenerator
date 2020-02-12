@@ -1,7 +1,7 @@
 Import-Module .\Scripts\Formatters\DataCellsFormatter.psm1
 Import-Module .\Scripts\Formatters\WorksheetFormatter.psm1
 Import-Module .\Scripts\Formatters\HeaderCellsFormatter.psm1
-Import-Module .\Scripts\Models\UsedRange.psm1
+Import-Module .\Scripts\Models\Variables.psm1
 Import-Module .\Scripts\ProgressWriter.psm1
 
 
@@ -27,7 +27,7 @@ function Format-Data($ws){
     # Format cell structures
     Format-DateAndRecordCells -range $Range
 
-    $Range = $ws.Range("A2","A300")
+    $Range = $ws.Range("A2","A600")
     Format-IhvanNameCells -range $Range
 
     Write-Ok

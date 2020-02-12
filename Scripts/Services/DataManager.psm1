@@ -1,5 +1,5 @@
 
-Import-Module .\Scripts\Models\UsedRange.psm1
+Import-Module .\Scripts\Models\Variables.psm1
 Import-Module .\Scripts\ProgressWriter.psm1
 
 $script:DataHash = [ordered]@{}

@@ -1,8 +1,7 @@
 Import-Module .\Scripts\Formatters\WorksheetFormatter.psm1
 Import-Module .\Scripts\Formatters\HeaderCellsFormatter.psm1
-Import-Module .\Scripts\Models\UsedRange.psm1
+Import-Module .\Scripts\Models\Variables.psm1
 
-$script:Month = ""
 
 function Set-Headers($ws){
     # Add columns and rows to new worksheet
@@ -45,7 +44,8 @@ function Set-DateFormat($ws){
 
     } while ($null -ne  $ws.cells.item(5,$column).value())
 
-    $script:Month = $date.ToString("MMMM").ToUpper()
+    $month = $date.ToString("MMMM").ToUpper()
+    Set-CurrentMonth -value $month
     Set-Culture en-GB
 }
 
@@ -55,7 +55,8 @@ function Set-Title($ws){
     Format-Title -Range $ws.Range("A1")
     $ws.Range( $ws.Cells(1,1), $ws.Cells(2, $maxColumn)).Merge()
 
-    $ws.Cells.Item(3,1) = "$($script:Month)"
+    $month = Get-CurrentMonth
+    $ws.Cells.Item(3,1) = "$($month)"
     Format-Title -Range $ws.Range("A3")
     $ws.Range( $ws.Cells(3,1), $ws.Cells(3, $maxColumn)).Merge()
 
