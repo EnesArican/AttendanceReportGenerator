@@ -38,7 +38,7 @@ function Set-DateFormat($ws){
 
         $date = [datetime]$dateString
 
-        $ws.cells.item(4,$column) = $date.ToString("dd\/MM\/yyyy")
+        $ws.cells.item(4,$column) = $date.ToString("dd-MM-yyyy")
         $ws.cells.item(5,$column) = $date.ToString("dddd")
         $column++
 

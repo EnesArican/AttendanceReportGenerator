@@ -9,7 +9,7 @@ Open-ExcelDoc -path "C:\Temp\daily_report.csv"
 $Worksheet = Get-Worksheet
 
 Get-Data -ws $Worksheet
-Get-Dates -ws $Worksheet
+#Get-Dates -ws $Worksheet
 
 Add-Worksheet
 $Worksheet = Get-Worksheet

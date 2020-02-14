@@ -6,19 +6,25 @@ $script:DataHash = [ordered]@{}
 $script:DatesList = New-Object System.Collections.Generic.List[System.Object]
 
 function Get-Data($ws){
-    Write-Host "Getting names and attendance records..." -NoNewline
+    Write-Host "Getting all data..." -NoNewline
 
-    $nameString = 'Last Name'
-    $className = 'Fatih'
+    $nameString = 'Fatih'
+   
     $range = $ws.Range("A1","A900")
     $recordSet = 0
-    $nameSearch = $range.find($nameString)
+    $nameSearch = $range.find($nameString,[Type]::Missing,[Type]::Missing,1)
     
     if ($null -ne $nameSearch) {
         $firstAddress = $nameSearch.Address()
        do {
             $recordSet++
-            $row = $nameSearch.row + 1
+            $row = $nameSearch.row + 2
+
+            $dateRow = $nameSearch.row - 2
+            Write-Host $nameSearch.row
+           # $date = $ws.cells.item($dateRow,1).value()            
+           # $script:DatesList.Add($date)
+
             do {
                 $lastName = $ws.cells.item($row,1).value()
                 if ($lastName){ Add-AttendanceToHash -ws $ws -row $row -lastName $lastName -recordSet $recordSet }
