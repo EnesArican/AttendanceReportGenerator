@@ -21,9 +21,8 @@ function Get-Data($ws){
             $row = $nameSearch.row + 2
 
             $dateRow = $nameSearch.row - 2
-            Write-Host $nameSearch.row
-           # $date = $ws.cells.item($dateRow,1).value()            
-           # $script:DatesList.Add($date)
+            $date = $ws.cells.item($dateRow,1).value()            
+            $script:DatesList.Add($date)
 
             do {
                 $lastName = $ws.cells.item($row,1).value()
