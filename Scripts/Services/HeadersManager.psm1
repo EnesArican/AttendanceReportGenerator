@@ -42,6 +42,8 @@ function Set-DateFormat($ws){
         $ws.cells.item(5,$column) = $date.ToString("dddd")
         $column++
 
+        Write-Host $date.ToString("dd-MM-yyyy")
+
     } while ($null -ne  $ws.cells.item(5,$column).value())
 
     $month = $date.ToString("MMMM").ToUpper()

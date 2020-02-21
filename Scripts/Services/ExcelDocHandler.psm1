@@ -33,10 +33,11 @@ function Get-Worksheet(){
 
 
 function Close-ExcelDoc(){
-    $month = Get-CurrentMonth
-    $path = "C:\Temp\Hatim Takip Çizelgesi $($month.ToLower()).xlsx"
+    #$month = Get-CurrentMonth
+    #$path = "C:\Temp\Hatim Takip Çizelgesi $($month.ToLower()).xlsx"
+    #$script:Workbook.SaveAs($path)
 
-    $script:Workbook.SaveAs($path)
+    $script:Workbook.Save()
     $script:Workbook.Close()
     $script:Excel.Quit()
 

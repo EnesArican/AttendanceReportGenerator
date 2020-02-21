@@ -17,12 +17,10 @@ function Get-Data($ws){
     if ($null -ne $nameSearch) {
         $firstAddress = $nameSearch.Address()
        do {
+            Add-DateToList -ws $ws -row ($nameSearch.row - 1)
+
             $recordSet++
             $row = $nameSearch.row + 2
-
-            $dateRow = $nameSearch.row - 2
-            $date = $ws.cells.item($dateRow,1).value()            
-            $script:DatesList.Add($date)
 
             do {
                 $lastName = $ws.cells.item($row,1).value()
@@ -43,6 +41,19 @@ function Get-Data($ws){
     Write-Ok
 }
 
+function Add-DateToList($ws, $row){
+    
+    do {
+        #$rowValue = $ws.cells.item($row,1).value() 
+        $row--
+    } while ($row -ne 1 )
+
+    Write-Host $row
+    #Write-Host $rowValue
+    #$date = $ws.cells.item($row,1).value()          
+    #$script:DatesList.Add($date)
+}
+
 function Add-AttendanceToHash($ws, $row, $lastName, $recordSet){
     $value = $ws.cells.item($row,3).value()
     $firstName =  $ws.cells.item($row,2).value()
@@ -58,29 +69,6 @@ function Add-AttendanceToHash($ws, $row, $lastName, $recordSet){
         $attendanceArr.Add($value)
         $script:DataHash.Add($key, $attendanceArr)
     }
-}
-
-
-function Get-Dates($ws){
-    Write-Host "Getting dates..." -NoNewline
-
-    $dateString = 'Date:*'
-    $range = $ws.Range("A1","A900")
-    
-    $dateSearch = $range.find($dateString)
-    if ($null -ne $dateSearch) {
-        $FirstAddress = $dateSearch.Address()
-       do { 
-            $row = $dateSearch.row
-            $date = $ws.cells.item($row,1).value()            
-            $script:DatesList.Add($date)
-
-    	    $dateSearch = $range.FindNext($dateSearch)
-        
-        } while ( $null -ne $dateSearch -and $dateSearch.Address() -ne $FirstAddress)
-    }
-
-    Write-Ok
 }
 
 
