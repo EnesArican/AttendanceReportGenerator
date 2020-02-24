@@ -6,16 +6,21 @@ Import-Module .\Scripts\ProgressWriter.psm1
 
 
 function Format-Data($ws){
-    Write-Host "Working on formatting..." -NoNewline
+    Write-Host "Working on formatting." -NoNewline
 
     $Range = $ws.Range("B2","CC300")
 
     # Replace values 
     Find-Replace -range $Range -SearchString 'P' -ReplaceString 'VAR'
     Find-Replace -range $Range -SearchString 'A' -ReplaceString 'YOK'
+
+    Write-Host "." -NoNewline
+
     Find-Replace -range $Range -SearchString 'TU' -ReplaceString 'İZİNLİ'
     Find-Replace -range $Range -SearchString 'M' -ReplaceString 'HASTA'
     Find-Replace -range $Range -SearchString 'emp' -ReplaceString ''
+
+    Write-Host "." -NoNewline
 
     # Add validation
     $Range.Validation.Delete()

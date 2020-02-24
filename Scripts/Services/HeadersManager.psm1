@@ -10,7 +10,7 @@ function Set-Headers($ws){
     
     Set-NumberingColumn -ws $ws
     Set-DateFormat -ws $ws
-    Set-Title -ws $ws
+    #Set-Title -ws $ws
 }
 
 function Set-NumberingColumn($ws){
@@ -38,11 +38,12 @@ function Set-DateFormat($ws){
 
         $date = [datetime]$dateString
 
-        $ws.cells.item(4,$column) = $date.ToString("dd-MM-yyyy")
+       
+        $ws.cells.item(4,$column) = "hello " + $date.ToString("dd-MM-yyyy")
         $ws.cells.item(5,$column) = $date.ToString("dddd")
         $column++
 
-        Write-Host $date.ToString("dd-MM-yyyy")
+        Write-Host $date
 
     } while ($null -ne  $ws.cells.item(5,$column).value())
 

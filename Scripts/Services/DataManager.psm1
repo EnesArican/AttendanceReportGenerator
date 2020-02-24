@@ -6,7 +6,7 @@ $script:DataHash = [ordered]@{}
 $script:DatesList = New-Object System.Collections.Generic.List[System.Object]
 
 function Get-Data($ws){
-    Write-Host "Getting all data..." -NoNewline
+    Write-Host "Getting all data." -NoNewline
 
     $nameString = 'Fatih'
     $range = $ws.Range("A1","A900")
@@ -18,11 +18,12 @@ function Get-Data($ws){
     if ($null -ne $nameSearch) {
         $firstAddress = $nameSearch.Address()
        do {
+            Write-Host "." -NoNewline
             Add-DateToList -ws $ws -row $nameSearch.row -prevRow $previousDataRow
 
             $recordSet++
             $row = $nameSearch.row + 2
-
+            $previousDataRow = $row
             # do {
             #     $lastName = $ws.cells.item($row,1).value()
             #     if ($lastName){ Add-AttendanceToHash -ws $ws -row $row -lastName $lastName -recordSet $recordSet }
@@ -30,7 +31,7 @@ function Get-Data($ws){
             # } while ($null -ne $lastName)
             Get-Attendance -ws $ws -row $row -recordSet $recordSet
 
-            $previousDataRow = $row
+            
 
             $absentNamesForDate = $script:DataHash.GetEnumerator() | ? { $_.Value.Count -lt $recordSet } 
             $absentNamesForDate | % { $_.Value.Add("emp") }
