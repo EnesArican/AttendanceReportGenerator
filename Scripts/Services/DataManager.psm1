@@ -9,25 +9,29 @@ function Get-Data($ws){
     Write-Host "Getting all data..." -NoNewline
 
     $nameString = 'Fatih'
-   
     $range = $ws.Range("A1","A900")
     $recordSet = 0
+    $previousDataRow = 0
+
     $nameSearch = $range.find($nameString,[Type]::Missing,[Type]::Missing,1)
     
     if ($null -ne $nameSearch) {
         $firstAddress = $nameSearch.Address()
        do {
-            Add-DateToList -ws $ws -row ($nameSearch.row - 1)
+            Add-DateToList -ws $ws -row $nameSearch.row -prevRow $previousDataRow
 
             $recordSet++
             $row = $nameSearch.row + 2
 
-            do {
-                $lastName = $ws.cells.item($row,1).value()
-                if ($lastName){ Add-AttendanceToHash -ws $ws -row $row -lastName $lastName -recordSet $recordSet }
-                $row++
-            } while ($null -ne $lastName)
-            
+            # do {
+            #     $lastName = $ws.cells.item($row,1).value()
+            #     if ($lastName){ Add-AttendanceToHash -ws $ws -row $row -lastName $lastName -recordSet $recordSet }
+            #     $row++
+            # } while ($null -ne $lastName)
+            Get-Attendance -ws $ws -row $row -recordSet $recordSet
+
+            $previousDataRow = $row
+
             $absentNamesForDate = $script:DataHash.GetEnumerator() | ? { $_.Value.Count -lt $recordSet } 
             $absentNamesForDate | % { $_.Value.Add("emp") }
                         
@@ -41,17 +45,21 @@ function Get-Data($ws){
     Write-Ok
 }
 
-function Add-DateToList($ws, $row){
+function Add-DateToList($ws, $row, $prevDataRow){
     
-    do {
-        #$rowValue = $ws.cells.item($row,1).value() 
+    while ($row -ne $prevDataRow -and $rowValue -notmatch "Date") {
+        $rowValue = $ws.cells.item($row,1).value() 
         $row--
-    } while ($row -ne 1 )
+    }     
+    $script:DatesList.Add($rowValue)
+}
 
-    Write-Host $row
-    #Write-Host $rowValue
-    #$date = $ws.cells.item($row,1).value()          
-    #$script:DatesList.Add($date)
+function Get-Attendance($ws, $row, $recordSet){
+    do {
+        $lastName = $ws.cells.item($row,1).value()
+        if ($lastName){ Add-AttendanceToHash -ws $ws -row $row -lastName $lastName -recordSet $recordSet }
+        $row++
+    } while ($null -ne $lastName)
 }
 
 function Add-AttendanceToHash($ws, $row, $lastName, $recordSet){
@@ -108,5 +116,6 @@ function Set-Dates($ws){
 }
 
 
-Export-ModuleMember -Function 'Get-*'
-Export-ModuleMember -Function 'Set-*'
+Export-ModuleMember -Function 'Get-Data'
+Export-ModuleMember -Function 'Set-Data'
+Export-ModuleMember -Function 'Set-Dates'

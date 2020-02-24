@@ -12,15 +12,15 @@ Get-Data -ws $Worksheet
 #Get-Dates -ws $Worksheet
 
 Add-Worksheet
-$Worksheet = Get-Worksheet
+#$Worksheet = Get-Worksheet
 
-Set-Data -ws $Worksheet
-Set-Dates -ws $Worksheet
+#Set-Data -ws $Worksheet
+#Set-Dates -ws $Worksheet
 
-Format-Data -ws $Worksheet
+#Format-Data -ws $Worksheet
 
-Set-Headers -ws $Worksheet
-Format-Headers -ws $Worksheet
+#Set-Headers -ws $Worksheet
+#Format-Headers -ws $Worksheet
 
 Close-ExcelDoc
 
