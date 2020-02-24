@@ -37,13 +37,14 @@ function Set-DateFormat($ws){
         $dateString = $dateString.Substring($dateString.Length - 11)
 
         $date = [datetime]$dateString
-
        
-        $ws.cells.item(4,$column) = "hello " + $date.ToString("dd-MM-yyyy")
+        $ws.cells.item(4,$column) = $date
         $ws.cells.item(5,$column) = $date.ToString("dddd")
+        $ws.cells.item(4,$column).NumberFormat = "d-M-yyyy"
+
         $column++
 
-        Write-Host $date
+        ##Write-Host $date
 
     } while ($null -ne  $ws.cells.item(5,$column).value())
 
