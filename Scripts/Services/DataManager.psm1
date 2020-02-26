@@ -24,11 +24,6 @@ function Get-Data($ws){
             $recordSet++
             $row = $nameSearch.row + 2
             $previousDataRow = $row
-            # do {
-            #     $lastName = $ws.cells.item($row,1).value()
-            #     if ($lastName){ Add-AttendanceToHash -ws $ws -row $row -lastName $lastName -recordSet $recordSet }
-            #     $row++
-            # } while ($null -ne $lastName)
             Get-Attendance -ws $ws -row $row -recordSet $recordSet
 
             

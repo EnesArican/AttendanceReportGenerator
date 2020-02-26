@@ -11,20 +11,13 @@ function Format-Data($ws){
     $Range = $ws.Range("B2","CC300")
 
     # Replace values 
-    Find-Replace -range $Range -SearchString 'P' -ReplaceString 'VAR'
-    Find-Replace -range $Range -SearchString 'A' -ReplaceString 'YOK'
-
-    Write-Host "." -NoNewline
-
-    Find-Replace -range $Range -SearchString 'TU' -ReplaceString 'İZİNLİ'
-    Find-Replace -range $Range -SearchString 'M' -ReplaceString 'HASTA'
-    Find-Replace -range $Range -SearchString 'emp' -ReplaceString ''
+    #Format-AttendanceValues -range $Range
 
     Write-Host "." -NoNewline
 
     # Add validation
-    $Range.Validation.Delete()
-    $Range.Validation.Add(3, 1, 1, "VAR,YOK,İZİNLİ,HASTA") | Out-Null
+    #$Range.Validation.Delete()
+    #$Range.Validation.Add(3, 1, 1, "VAR,YOK,İZİNLİ,HASTA") | Out-Null
 
     # Add format conditions (colour cells) 
     #Add-FormatConditions -range $Range
@@ -34,6 +27,23 @@ function Format-Data($ws){
 
     $Range = $ws.Range("A2","A600")
     Format-IhvanNameCells -range $Range
+
+    Write-Ok
+}
+
+
+function Format-AttendanceValues($range){
+    Write-Host "Working on formatting." -NoNewline
+
+    Find-Replace -range $Range -SearchString 'P' -ReplaceString 'VAR'
+    Write-Host "." -NoNewline
+
+    Find-Replace -range $Range -SearchString 'A' -ReplaceString 'YOK'
+    Write-Host "." -NoNewline
+
+    Find-Replace -range $Range -SearchString 'TU' -ReplaceString 'İZİNLİ'
+    Find-Replace -range $Range -SearchString 'M' -ReplaceString 'HASTA'
+    Find-Replace -range $Range -SearchString 'emp' -ReplaceString ''
 
     Write-Ok
 }

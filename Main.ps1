@@ -8,6 +8,10 @@ Import-Module .\Scripts\ExcelUtils.psm1
 Open-ExcelDoc -path "C:\Temp\daily_report.csv"
 $Worksheet = Get-Worksheet
 
+$Range =  $Worksheet.Range("C2","C900") 
+Format-AttendanceValues($Range)
+
+
 Get-Data -ws $Worksheet
 #Get-Dates -ws $Worksheet
 

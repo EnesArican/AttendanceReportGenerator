@@ -14,13 +14,13 @@ function Add-NewColumn($worksheet){
 }
 
 function Find-Replace{
-    param([__ComObject]$range, [String]$SearchString, [String]$ReplaceString)
+    param([__ComObject]$range, [String]$searchString, [String]$ReplaceString)
     
-    $Search = $range.find($SearchString, [Type]::Missing,[Type]::Missing,1)
+    $search = $range.find($searchString, [Type]::Missing,[Type]::Missing,1)
     if ($null -ne $search) {
 	    $FirstAddress = $search.Address
 	    do {
-		    $Search.value() = $ReplaceString
+		    $search.value() = $ReplaceString
 		    $search = $range.FindNext($search)
 	    } while ( $null -ne $search -and $search.Address -ne $FirstAddress)
     }
